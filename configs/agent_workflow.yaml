@@ -1,0 +1,28 @@
+# configs/agent_workflow.yaml
+# Autonomous Finance Agent Reasoning & Evaluation Pipeline
+pipeline:
+  name: "Autonomous ReAct Agent Reasoning Workflow"
+  nodes:
+    load:
+      type: "dataloader"
+      plugin: "synthetic_ohlcv"
+      kwargs:
+        symbols: ["SYNTH_A", "SYNTH_B"]
+
+    evaler:
+      type: "evaler"
+      plugin: "financial_metrics"
+      kwargs:
+        frequency: "1d"
+
+    agent:
+      type: "agent"
+      plugin: "finance_agent"
+      kwargs:
+        model_name: "gpt-4o-mini"
+        temperature: 0.1
+
+output: "agent"
+
+guardian:
+  enabled: true

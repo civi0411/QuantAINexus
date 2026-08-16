@@ -1,0 +1,8 @@
+# QuantAINexus — Research config (schema + PIT + determinism checks)
+mode: research
+guardian_profile: research
+metadata_store_url: "sqlite:///./qnx.db"
+artifact_store_path: "./artifacts"
+seed: null
+telemetry_enabled: true
+native_enabled: true

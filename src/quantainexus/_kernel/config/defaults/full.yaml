@@ -1,0 +1,8 @@
+# QuantAINexus — Full production config (all checks enabled)
+mode: production
+guardian_profile: production
+metadata_store_url: "postgresql://qnx:password@localhost:5432/qnx"
+artifact_store_path: "/var/qnx/artifacts"
+seed: 42
+telemetry_enabled: true
+native_enabled: true

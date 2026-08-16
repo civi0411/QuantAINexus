@@ -1,0 +1,37 @@
+# configs/rl_portfolio.yaml
+# Reinforcement Learning Multi-Asset Portfolio Allocation Pipeline
+pipeline:
+  name: "Multi-Asset Continuous PPO Portfolio Allocation"
+  nodes:
+    load:
+      type: "dataloader"
+      plugin: "vn30"
+      kwargs:
+        symbols: ["VIC", "FPT", "VNM", "TCB", "MBB"]
+        start: "2021-01-01"
+        end: "2024-01-01"
+
+    model:
+      type: "model"
+      plugin: "ppo"
+      kwargs:
+        state_dim: 10
+        action_dim: 5
+
+    trainer:
+      type: "trainer"
+      plugin: "ppo_portfolio"
+      kwargs:
+        epochs: 5
+        lr_policy: 0.0003
+
+    evaler:
+      type: "evaler"
+      plugin: "financial_metrics"
+      kwargs:
+        frequency: "1d"
+
+output: "evaler"
+
+guardian:
+  enabled: true

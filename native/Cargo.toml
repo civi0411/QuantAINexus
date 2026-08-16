@@ -1,0 +1,18 @@
+[workspace]
+members = [
+    "crates/qnx-core",
+    "crates/qnx-pit",
+    "crates/qnx-compute",
+    "crates/qnx-arrow",
+    "crates/qnx-quant",
+    "crates/qnx-signal",
+    "crates/qnx-backtest",
+    "crates/qnx-py",
+]
+resolver = "2"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"

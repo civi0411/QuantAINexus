@@ -1,0 +1,8 @@
+# QuantAINexus — Minimal config (quickstart, no checks)
+mode: research
+guardian_profile: lab
+metadata_store_url: "sqlite:///./qnx.db"
+artifact_store_path: "./artifacts"
+seed: null
+telemetry_enabled: false
+native_enabled: true

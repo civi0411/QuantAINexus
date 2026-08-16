@@ -1,0 +1,35 @@
+# configs/research.yaml
+# Template for running a quantitative research backtest
+pipeline:
+  name: "Cross-Sectional Momentum Research"
+  nodes:
+    - id: "data_load"
+      type: "dataloader"
+      plugin: "vn30"
+      args:
+        start_date: "2018-01-01"
+        end_date: "2023-01-01"
+        
+    - id: "calc_factor"
+      type: "factor"
+      plugin: "cross_sectional_momentum"
+      dependencies: ["data_load"]
+      args:
+        lookback: 21
+        
+    - id: "backtest"
+      type: "backtest"
+      plugin: "vectorized"
+      dependencies: ["calc_factor"]
+      args:
+        initial_capital: 100000
+
+guardian:
+  enabled: true
+  strict_mode: true
+  checks:
+    - "schema"
+    - "point_in_time"
+    - "triple_barrier"
+    - "cpcv"
+    - "transaction_cost"

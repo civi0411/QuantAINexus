@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quantainexus"
+version = "2.0.0a0"
+description = "A Research-First Framework for Quant Researcher, AI/DS, Hybrid Quant, and LLM Agents"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "pydantic-settings",
+    "polars"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quantainexus"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov"
+]

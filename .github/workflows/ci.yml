@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Lint with ruff
+        run: ruff check src/ tests/
+
+      - name: Type check with mypy
+        run: mypy src/quantainexus --ignore-missing-imports
+
+      - name: Run unit tests
+        run: PYTHONPATH=src python -m pytest tests/unit/ -v
+
+      - name: Run golden tests
+        run: PYTHONPATH=src python -m pytest tests/golden/ -v
+
+      - name: Run example pipeline (smoke test)
+        run: PYTHONPATH=src python examples/run_basic_pipeline.py

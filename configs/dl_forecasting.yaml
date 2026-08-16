@@ -1,0 +1,53 @@
+# configs/dl_forecasting.yaml
+# Deep Learning Time Series Forecasting Pipeline (Autoformer / DLinear)
+pipeline:
+  name: "Deep Learning Time Series Forecasting Pipeline"
+  nodes:
+    load:
+      type: "dataloader"
+      plugin: "vn30"
+      kwargs:
+        start: "2020-01-01"
+        end: "2024-01-01"
+
+    scaler:
+      type: "scaler"
+      plugin: "standard"
+      kwargs:
+        cols: ["close", "volume"]
+
+    window:
+      type: "adapter"
+      plugin: "window_generator"
+      kwargs:
+        history_timestamps: 64
+        future_timestamps: 32
+
+    model:
+      type: "model"
+      plugin: "dlinear"
+      kwargs:
+        history_timestamps: 64
+        future_timestamps: 32
+        epochs: 10
+
+    trainer:
+      type: "trainer"
+      plugin: "forecasting"
+      kwargs:
+        epochs: 10
+        lr: 0.001
+        use_amp: false
+
+    evaler:
+      type: "evaler"
+      plugin: "forecasting_eval"
+      kwargs:
+        pred_col: "pred"
+        label_col: "close"
+
+output: "evaler"
+
+guardian:
+  enabled: true
+  strict_mode: false

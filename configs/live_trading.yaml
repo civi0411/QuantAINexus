@@ -1,0 +1,32 @@
+# configs/live_trading.yaml
+# Template for running a live trading execution
+pipeline:
+  name: "Live Momentum Trading"
+  nodes:
+    - id: "data_load"
+      type: "dataloader"
+      plugin: "vn30" # Streaming mode
+      args:
+        live: true
+        
+    - id: "calc_factor"
+      type: "factor"
+      plugin: "cross_sectional_momentum"
+      dependencies: ["data_load"]
+      
+    - id: "execution"
+      type: "execution"
+      plugin: "twap"
+      dependencies: ["calc_factor"]
+      
+production:
+  monitor: true
+  auth_required: true
+  audit_logging: true
+
+guardian:
+  enabled: true
+  strict_mode: true
+  checks:
+    - "schema"
+    - "transaction_cost"

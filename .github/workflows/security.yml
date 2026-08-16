@@ -1,0 +1,28 @@
+name: Security
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday 8am UTC
+  push:
+    branches: [main]
+
+jobs:
+  dependency-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Scan with pip-audit
+        run: |
+          pip install pip-audit
+          pip-audit --requirement requirements.txt || true
+
+      - name: Scan with safety
+        run: |
+          pip install safety
+          safety check || true
